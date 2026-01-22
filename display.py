@@ -1,7 +1,8 @@
 import displayio
 import terminalio
-from adafruit_display_text import label
 from adafruit_display_shapes.rect import Rect
+from adafruit_display_text import label
+
 
 class Display:
     def __init__(self, macropad):
@@ -14,22 +15,25 @@ class Display:
             x = key_index % 3
             y = key_index // 3
             self.group.append(
-                label.Label(terminalio.FONT,
-                    text='',
+                label.Label(
+                    terminalio.FONT,
+                    text="",
                     color=0xFFFFFF,
-                    anchored_position=((self.display.width - 1) * x / 2,
-                    self.display.height - 1 - (3 - y) * 12),
-                    anchor_point=(x / 2, 1.0)
+                    anchored_position=(
+                        (self.display.width - 1) * x / 2,
+                        self.display.height - 1 - (3 - y) * 12,
+                    ),
+                    anchor_point=(x / 2, 1.0),
                 )
             )
         self.group.append(Rect(0, 0, self.display.width, 12, fill=0xFFFFFF))
         self.group.append(
             label.Label(
                 terminalio.FONT,
-                text='',
+                text="",
                 color=0x000000,
-                anchored_position=(self.display.width//2, -2),
-                anchor_point=(0.5, 0.0)
+                anchored_position=(self.display.width // 2, -2),
+                anchor_point=(0.5, 0.0),
             )
         )
         self.display.root_group = self.group
@@ -45,16 +49,17 @@ class Display:
         self.display.refresh()
 
     def setApp(self, app):
+        self.initialize()
         self.group[13].text = app.name
         for i in range(12):
             if i < len(app.macros):
                 self.group[i].text = app.macros[i][1]
             else:
-                self.group[i].text = ''
+                self.group[i].text = ""
         self.display.refresh()
 
     def setTitle(self, text):
         self.group[13].text = text
         for i in range(12):
-            self.group[i].text = ''
+            self.group[i].text = ""
         self.display.refresh()
